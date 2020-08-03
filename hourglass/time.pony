@@ -34,21 +34,20 @@ trait Time is (Comparable[Time] & Stringable)
 
   fun string(): String iso^ =>
     let offset' = offset().abs()
-    var off_minute = offset'.fld(60)
+    var off_minute = offset'.fld(60*1000)
     let off_hour = off_minute.fld(60)
     off_minute = off_minute - (off_hour * 60)
-
-    let output = recover String(18) end
-    output
-      .> append(_Format.pad(hour()))
-      .> append(":")
-      .> append(_Format.pad(minute()))
-      .> append(":")
-      .> append(_Format.pad(second()))
-      .> append(".")
-      .> append(_Format.pad(milli(), 3))
-      .> append(if offset() < 0 then "-" else "+" end)
-      .> append(_Format.pad(off_hour))
-      .> append(":")
-      .> append(_Format.pad(off_minute))
-    consume output
+    var buffer = recover ("\0" * 20) end
+    var format = "%02d:%02d:%02d.%03d%+03d:%02d"
+    let n = @sprintf[I32](
+      buffer.cstring(),
+      format.cstring(),
+      hour(),
+      minute(),
+      second(),
+      milli(),
+      off_hour,
+      off_minute
+    )
+    buffer.delete(n.isize(), USize.max_value())
+    consume buffer
