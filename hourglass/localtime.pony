@@ -1,8 +1,7 @@
+use stdtime = "time"
+
 class LocalTime is Time
-  var _hour: I32
-  var _minute: I32
-  var _second: I32
-  var _milli: I32
+  var _timestamp: I32
   var _offset: I32
 
   new create(
@@ -12,41 +11,40 @@ class LocalTime is Time
     milli': I32 = 0,
     offset': I32 = 0)
   =>
-    _hour = hour'
-    _minute = minute'
-    _second = second'
-    _milli = milli'
+    _timestamp = (((((hour' * 60) + minute') * 60) + second') * 1000) + milli'
     _offset = offset'
 
   new now() => None
-    let now' = _CTime.now()
-    let tm = _CTime.localtime(now'._1)
-    _hour = tm.tm_hour
-    _minute = tm.tm_min
-    _second = tm.tm_sec
-    _milli = now'._2.fld(1_000_000).i32()
-    _offset = tm.tm_gmtoff.i32()
+    let now' = stdtime.Time.now()
+    let second' = now'._1 % 86400
+    let milli' = now'._2.fld(1_000_000).i32()
+    _timestamp = (second'.i32() * 1000) + milli'
+    _offset = 0
 
-  new from_posix(t: ILong, milli': I32 = 0, offset': I32 = 0) =>
-    let t': ILong = t + offset'.ilong()
-    let tm = _CTime.gmtime(t')
-    _hour = tm.tm_hour
-    _minute = tm.tm_min
-    _second = tm.tm_sec
-    _milli = milli'
+  new from_posix(t: I64, milli': I32 = 0, offset': I32 = 0) =>
+    let t' = (t + offset'.i64()) % 86400
+    _timestamp = (t'.i32() * 1000) + milli'
     _offset = offset'
 
-  fun hour(): I32 => _hour
-  fun minute(): I32 => _minute
-  fun second(): I32 => _second
-  fun milli(): I32 => _milli
+  new _from_timestamp(t: I32, o: I32) =>
+    _timestamp = t
+    _offset = o
+
+  fun hour(): I32 => _timestamp.fld(1000 * 60 * 60)
+  fun minute(): I32 => _timestamp.fld(1000 * 60) % 60
+  fun second(): I32 => _timestamp.fld(1000) % 60
+  fun milli(): I32 => _timestamp % 1000
   fun offset(): I32 => _offset
 
   fun ref advance(d: TimeDuration) => None
 
+  fun ref set_offset(offset': I32) =>
+    let old_offset = _offset = offset'
+    _timestamp = _timestamp + -old_offset + offset'
+
   fun clone(): LocalTime iso^ =>
     recover
-      LocalTime.create(_hour, _minute, _second, _milli, _offset)
+      LocalTime._from_timestamp(_timestamp, _offset)
     end
 
   fun max(): LocalTime iso^ =>

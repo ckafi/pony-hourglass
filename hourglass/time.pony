@@ -1,6 +1,5 @@
 trait Time is (Comparable[Time] & Stringable)
   new now()
-  new from_posix(t: ILong, milli': I32 = 0, offset': I32 = 0)
 
   fun hour(): I32
   fun minute(): I32
