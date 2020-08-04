@@ -21,8 +21,9 @@ class LocalTime is Time
     _timestamp = (second'.i32() * 1000) + milli'
     _offset = 0
 
-  new from_posix(t: I64, milli': I32 = 0, offset': I32 = 0) =>
-    let t' = (t + offset'.i64()) % 86400
+  new from_unix(t: I64, milli': I32 = 0, offset': I32 = 0) =>
+    var t' = (t + offset'.i64()) % 86400
+    t' = if t' < 0 then 86400 + t' else t' end
     _timestamp = (t'.i32() * 1000) + milli'
     _offset = offset'
 
