@@ -31,16 +31,21 @@ actor Main
     try
       let zone = TimeZones(env.root)?
       let local = zone.local()?
+      let auckland = zone("Pacific/Auckland")?
       let london = zone("Europe/London")?
       let honolulu = zone("Pacific/Honolulu")?
       write("Now locally:            ")
       print(LocalTime.now(local))
+      write("Now in Auckland:        ")
+      print(LocalTime.now(auckland))
       write("Now in London:          ")
       print(LocalTime.now(london))
       write("Now in Honolulu:        ")
       print(LocalTime.now(honolulu))
       write("UNIX(10^9) locally:     ")
       print(LocalTime.from_unix(u where tz = local))
+      write("UNIX(10^9) in Auckland: ")
+      print(LocalTime.from_unix(u where tz = auckland))
       write("UNIX(10^9) in London:   ")
       print(LocalTime.from_unix(u where tz = london))
       write("UNIX(10^9) in Honolulu: ")
