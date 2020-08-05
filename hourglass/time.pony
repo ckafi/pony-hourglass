@@ -1,6 +1,4 @@
 trait Time is (Comparable[Time] & Stringable)
-  new now(tz: (TimeZone | None))
-
   fun hour(): I32
   fun minute(): I32
   fun second(): I32
