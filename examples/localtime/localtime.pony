@@ -9,7 +9,7 @@ actor Main
     let write = {(s: Stringable) => env.out.write(s.string()) }
     let u: I64 = 1_000_000_000
 
-    print("--- UTC ---")
+    print("--- System Time ---")
     write("Now:        ")
     print(LocalTime.now())
     write("UNIX(10^9): ")
