@@ -17,17 +17,15 @@ actor Main
 
     print("\n--- Simple Offsets ---")
     write("Now+02:00:        ")
-    print(LocalTime.now() .> set_offset(2))
+    print(LocalTime.now(Offset(where h = 2)))
     write("Now-03:30:        ")
-    print(LocalTime.now() .> set_offset(-3,-30))
+    print(LocalTime.now(Offset(where h = -3, m = -30)))
     write("UNIX(10^9)+02:00: ")
-    print(LocalTime.from_unix(u) .> set_offset(2))
+    print(LocalTime.from_unix(u, Offset(where h = 2)))
     write("UNIX(10^9)-03:30: ")
-    print(LocalTime.from_unix(u) .> set_offset(-3,-30))
+    print(LocalTime.from_unix(u, Offset(where h = -3, m = -30)))
 
     print("\n--- Offset from Time Zones ---")
-    // The time zone needs absolute timestamp,
-    // so we need to provide it during `now` or `from_unix`.
     try
       let zone = TimeZones(env.root)?
       let local = zone.local()?
@@ -43,11 +41,11 @@ actor Main
       write("Now in Honolulu:        ")
       print(LocalTime.now(honolulu))
       write("UNIX(10^9) locally:     ")
-      print(LocalTime.from_unix(u where tz = local))
+      print(LocalTime.from_unix(u where offset' = local))
       write("UNIX(10^9) in Auckland: ")
-      print(LocalTime.from_unix(u where tz = auckland))
+      print(LocalTime.from_unix(u where offset' = auckland))
       write("UNIX(10^9) in London:   ")
-      print(LocalTime.from_unix(u where tz = london))
+      print(LocalTime.from_unix(u where offset' = london))
       write("UNIX(10^9) in Honolulu: ")
-      print(LocalTime.from_unix(u where tz = honolulu))
+      print(LocalTime.from_unix(u where offset' = honolulu))
     end

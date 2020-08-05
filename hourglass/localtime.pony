@@ -12,18 +12,22 @@ class LocalTime is Time
   =>
     _t_milli = (((((hour' * 60) + minute') * 60) + second') * 1000) + milli'
 
-  new now(tz: (TimeZone | None) = None) =>
+  new now(offset': (TimeZone | I32) = 0) =>
     let now' = stdtime.Time.now()
     let t_milli = (now'._1 * 1000) + now'._2.fld(1_000_000)
-    _offset = match tz
-    | None => 0
+    _offset = match offset'
+    | let off: I32 => off
     | let tz': TimeZone => tz'(t_milli)._1
     end
     _t_milli = ((t_milli + _offset.i64()) %% (86400 * 1000)).i32()
 
-  new from_unix(t_second: I64, milli': I32 = 0, tz: (TimeZone | None) = None) =>
-    _offset = match tz
-    | None => 0
+  new from_unix(
+    t_second: I64,
+    milli': I32 = 0,
+    offset': (TimeZone | I32) = 0)
+  =>
+    _offset = match offset'
+    | let off: I32 => off
     | let tz': TimeZone => tz'(t_second * 1000)._1
     end
     _t_milli = (((t_second * 1000) + _offset.i64()) %% (86400 * 1000)).i32()
@@ -36,13 +40,7 @@ class LocalTime is Time
 
   fun ref advance(d: TimeDuration) => None
 
-  fun ref set_offset(
-    h: I32 = 0,
-    m: I32 = 0,
-    s: I32 = 0,
-    mil: I32 = 0)
-  =>
-    let offset' = (((((h * 60) + m) * 60) + s) * 1000) + mil
+  fun ref set_offset(offset': I32) =>
     let old_offset = _offset = offset'
     _t_milli = (_t_milli + -old_offset + offset') %% (86400 * 1000)
 
