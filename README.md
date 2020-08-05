@@ -1,6 +1,6 @@
 # Hourglass ⌛
 
-An IS0 8601 conform, time zone aware date and time package for pony
+An ISO 8601 conform, time zone aware date and time package for pony
 
 ## Status
 
