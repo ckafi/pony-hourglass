@@ -1,4 +1,4 @@
-# pony-hourglass
+# Hourglass ⌛
 
 An IS0 8601 conform, time zone aware date and time package for pony
 
@@ -6,7 +6,7 @@ An IS0 8601 conform, time zone aware date and time package for pony
 
 [![CircleCI](https://circleci.com/gh/ckafi/pony-hourglass.svg?style=svg)](https://circleci.com/gh/ckafi/pony-hourglass)
 
-pony-hourglass is pre-alpha software.
+Hourglass is pre-alpha software.
 
 ## Acknowledgments
 

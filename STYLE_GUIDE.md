@@ -1,3 +1,3 @@
 # Style Guide
 
-pony-hourglass follows the [Pony standard library Style Guide](https://github.com/ponylang/ponyc/blob/master/STYLE_GUIDE.md).
+Hourglass follows the [Pony standard library Style Guide](https://github.com/ponylang/ponyc/blob/master/STYLE_GUIDE.md).

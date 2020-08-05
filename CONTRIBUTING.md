@@ -1,6 +1,6 @@
 # Contributing
 
-You want to contribute to pony-hourglass? Awesome.
+You want to contribute to Hourglass? Awesome.
 
 There are a number of ways to contribute. As this document is a little long, feel free to jump to the section that applies to you currently:
 
