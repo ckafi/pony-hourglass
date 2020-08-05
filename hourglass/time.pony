@@ -1,5 +1,5 @@
 trait Time is (Comparable[Time] & Stringable)
-  new now()
+  new now(tz: (TimeZone | None))
 
   fun hour(): I32
   fun minute(): I32
@@ -10,8 +10,8 @@ trait Time is (Comparable[Time] & Stringable)
   fun ref advance(d: TimeDuration)
 
   fun clone(): Time iso^
-  fun max(): Time iso^
-  fun min(): Time iso^
+  fun max_value(): Time iso^
+  fun min_value(): Time iso^
 
   fun eq(that: box->Time): Bool =>
     (hour() == that.hour()) and
@@ -33,12 +33,11 @@ trait Time is (Comparable[Time] & Stringable)
     end
 
   fun string(): String iso^ =>
-    let offset' = offset().abs()
-    var off_minute = offset'.fld(60*1000)
-    let off_hour = off_minute.fld(60)
+    var off_minute = offset().div(60*1000)
+    let off_hour = off_minute.div(60)
     off_minute = off_minute - (off_hour * 60)
     var buffer = recover ("\0" * 20) end
-    var format = "%02d:%02d:%02d.%03d%+03d:%02d"
+    var format = "%02i:%02i:%02i.%03i%+03i:%02i"
     let n = @sprintf[I32](
       buffer.cstring(),
       format.cstring(),
@@ -47,7 +46,7 @@ trait Time is (Comparable[Time] & Stringable)
       second(),
       milli(),
       off_hour,
-      off_minute
+      off_minute.abs()
     )
     buffer.delete(n.isize(), USize.max_value())
     consume buffer
