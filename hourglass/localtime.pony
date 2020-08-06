@@ -30,7 +30,9 @@ class LocalTime is Time
     | let off: I32 => off
     | let tz': TimeZone => tz'(t_second * 1000)._1
     end
-    _t_milli_midn = (((t_second * 1000) + _offset.i64()) %% (86400 * 1000)).i32()
+    _t_milli_midn = (
+      ((t_second * 1000) + milli'.i64() + _offset.i64()) %% (86400 * 1000)
+    ).i32()
 
   new max_value() =>
     let hour': I32 = 24
