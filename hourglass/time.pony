@@ -8,8 +8,8 @@ trait Time is (Comparable[Time] & Stringable)
   fun ref advance(d: TimeDuration)
 
   fun clone(): Time iso^
-  fun max_value(): Time iso^
-  fun min_value(): Time iso^
+  new max_value(): Time iso^
+  new min_value(): Time iso^
 
   fun eq(that: box->Time): Bool =>
     (hour() == that.hour()) and

@@ -32,6 +32,16 @@ class LocalTime is Time
     end
     _t_milli_midn = (((t_second * 1000) + _offset.i64()) %% (86400 * 1000)).i32()
 
+  new max_value(): LocalTime iso^ =>
+    recover
+      LocalTime.create(24, 59, 60, 999)
+    end
+
+  new min_value(): LocalTime iso^ =>
+    recover
+      LocalTime(0, 0, 0, 0)
+    end
+
   fun hour(): I32 => _t_milli_midn.fld(1000 * 60 * 60)
   fun minute(): I32 => _t_milli_midn.fld(1000 * 60) % 60
   fun second(): I32 => _t_milli_midn.fld(1000) % 60
@@ -49,13 +59,3 @@ class LocalTime is Time
     that._t_milli_midn = _t_milli_midn
     that._offset = _offset
     consume that
-
-  fun max_value(): LocalTime iso^ =>
-    recover
-      LocalTime.create(24, 59, 60, 999)
-    end
-
-  fun min_value(): LocalTime iso^ =>
-    recover
-      LocalTime(0, 0, 0, 0)
-    end
