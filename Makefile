@@ -1,4 +1,4 @@
-config ?= release
+config ?= debug
 
 PACKAGE := hourglass
 COMPILE_WITH := ponyc
