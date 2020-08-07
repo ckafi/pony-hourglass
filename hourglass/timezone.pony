@@ -147,7 +147,7 @@ class val TimeZone
     _check_file(file)?
 
   fun _check_file(file: File) ? =>
-    if not (file.errno() is FileOK) then
+    if file.errno() isnt FileOK then
       _Debug.throw_error("Malformed TZif file: " + file.path.path)?
     end
 

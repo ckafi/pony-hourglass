@@ -14,7 +14,7 @@ class LocalTime is Time
 
   new now(offset': (TimeZone | I32) = 0) =>
     let now' = stdtime.Time.now()
-    let t_milli = (now'._1 * 1000) + now'._2.fld(1_000_000)
+    let t_milli = (now'._1 * 1000) + (now'._2 / 1_000_000)
     _offset = match offset'
     | let off: I32 => off
     | let tz': TimeZone => tz'(t_milli)._1
@@ -44,9 +44,9 @@ class LocalTime is Time
   new min_value() =>
     _t_milli_midn = 0
 
-  fun hour(): I32 => _t_milli_midn.fld(1000 * 60 * 60)
-  fun minute(): I32 => _t_milli_midn.fld(1000 * 60) % 60
-  fun second(): I32 => _t_milli_midn.fld(1000) % 60
+  fun hour(): I32 => _t_milli_midn / (1000 * 60 * 60)
+  fun minute(): I32 => (_t_milli_midn / (1000 * 60)) % 60
+  fun second(): I32 => (_t_milli_midn / 1000) % 60
   fun milli(): I32 => _t_milli_midn % 1000
   fun offset(): I32 => _offset
 
