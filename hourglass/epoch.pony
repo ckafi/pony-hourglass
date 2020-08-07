@@ -1,5 +1,4 @@
 primitive Epoch
-  fun instance(): Instance iso => recover Instance(0) end
   fun year(): I32 => 1970
   fun day_of_year(): I32 => 1
   fun month(): I32 => 1
