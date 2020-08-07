@@ -6,7 +6,7 @@ An ISO 8601 conform, time zone aware date and time package for pony.
 
 [![CircleCI](https://circleci.com/gh/ckafi/pony-hourglass.svg?style=svg)](https://circleci.com/gh/ckafi/pony-hourglass)
 
-Hourglass is pre-alpha software. Test coverage is not great yet, and breaking changes **will** occur. Use at your own peril.
+Hourglass is pre-alpha software. It is barely documented, test coverage is not great yet, and breaking changes **will** occur. Use at your own peril.
 
 ## Progess
 
@@ -29,6 +29,7 @@ Hourglass is pre-alpha software. Test coverage is not great yet, and breaking ch
 - Hourglass uses the proleptic Gregorian calendar (as by ISO 8601:2004), meaning it is assumed that the Gregorian calendar is in effect at all times in the past and future, and that the year before 1 AD is the year 0.
 - Hourglass does not (yet) handle leap seconds. All internal computation is based on leap second free UTC. If your system time is based on TAI, this package might no be for you.
 - There is (next to) no input validation, meaning you could try to create a time point `2020-13-55 -12:66:91` without raising an error. Sensible defaults will be substituted, and Hourglass will print a warning, but: garbage in, garbage out.
+- Time zone usage depends on existing `zoneinfo` files on the system, which should be okay for POSIX systems. Windows users have to provide their own time zone files.
 
 ## Acknowledgments
 
