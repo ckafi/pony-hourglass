@@ -1,4 +1,4 @@
-![Hourglass](https://raw.githubusercontent.com/ckafi/pony-hourglass/master/logo.png)]
+![Hourglass](https://raw.githubusercontent.com/ckafi/pony-hourglass/master/logo.png)
 
 An ISO 8601 conform, time zone aware date and time package for pony.
 
