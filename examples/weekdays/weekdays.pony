@@ -4,17 +4,14 @@ use "../../hourglass"
 
 actor Main
 
-  fun compare(x: Weekday, y: Weekday): String =>
-    x.string() + " is " +
-      if x == y then "" else "not " end +
-      "the same weekday as " +
-      y.string()
-
-
   new create(env: Env) =>
-    let x:Weekday = Monday
-    let y:Weekday = Monday
-    let z:Weekday = Sunday
+    let print = {(s: Stringable) => env.out.print(s.string()) }
+    let write = {(s: Stringable) => env.out.write(s.string()) }
 
-    env.out.print(compare(x, y))
-    env.out.print(compare(x, z))
+    print("--- Differences between weekdays ---")
+    for v1 in Weekdays.values() do
+      for v2 in Weekdays.values() do
+        write(v1); write(" -> "); write(v2)
+        write(" = "); print(v1.diff(v2))
+      end
+    end
