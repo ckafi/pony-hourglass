@@ -1,5 +1,6 @@
 use "buffered"
 use "collections"
+use "debug"
 use "files"
 
 class val TimeZone
@@ -78,7 +79,8 @@ class val TimeZone
     var bytewidth: USize = 4
     let magic = file.read_string(4)
     if magic != "TZif" then
-      _Debug.throw_error("Not a TZif file: " + file.path.path)?
+      Debug.err("Error: Not a TZif file: " + file.path.path)
+      error
     end
     match file.read(1)(0)?
     | '2' => _seek_next_header(file)?; bytewidth = 8
@@ -89,8 +91,11 @@ class val TimeZone
 
   fun _seek_next_header(file: File) ? =>
     repeat // search for next header magic
-      try while file.read(1)(0)? != 'T' do None end
-      else _Debug.throw_error("Malformed TZif file: " + file.path.path)?
+      try
+        while file.read(1)(0)? != 'T' do None end
+      else
+        Debug.err("Error: Malformed TZif file: " + file.path.path)
+        error
       end
     until file.read_string(3) == "Zif" end
     file.read(1) // skip version number
@@ -134,8 +139,8 @@ class val TimeZone
 
   fun ref _skip_leap_seconds(file: File, leapcnt: U32, bytewidth: USize) ? =>
     if leapcnt != 0 then
-      _Debug.print_warning(
-        "Given TZif file contains leap seconds: " + file.path.path
+      Debug.err(
+        "Warning: Given TZif file contains leap seconds: " + file.path.path
         + "\n         Hourglass does not adjust for leap seconds.")
     end
     file.seek((leapcnt.usize() * (bytewidth + 4)).isize())
@@ -161,7 +166,8 @@ class val TimeZone
 
   fun _check_file(file: File) ? =>
     if file.errno() isnt FileOK then
-      _Debug.throw_error("Malformed TZif file: " + file.path.path)?
+      Debug.err("Error: Malformed TZif file: " + file.path.path)
+      error
     end
 
   fun _read_u32(file: File): U32 =>

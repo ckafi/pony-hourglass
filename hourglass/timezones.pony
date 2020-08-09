@@ -1,3 +1,4 @@
+use "debug"
 use "files"
 
 class TimeZones
@@ -16,7 +17,8 @@ class TimeZones
     let tz_path = Path.join(rootpath, tzid)
     let fpath = FilePath(_base, tz_path)?
     if not fpath.exists() then
-      _Debug.throw_error("Time zone id invalid: " + tzid)?
+      Debug.err("Error: Time zone id invalid: " + tzid)
+      error
     end
     TimeZone._from_tziffile(fpath, tzid)?
 

@@ -1,3 +1,5 @@
+use "debug"
+
 type Weekday is
   ( Monday
   | Tuesday
@@ -55,7 +57,7 @@ primitive Weekdays
     | 7 => Sunday
     else
       // I don't feel like making this a partial function
-      _Debug.print_warning("Not a weekday value: " + d.string())
+      Debug.err("Warning: Not a weekday value: " + d.string())
       Sunday
     end
 
