@@ -1,8 +1,10 @@
+use stdtime = "time"
+
 class LocalDate is Date
-  var _t_days: I32 // days since epoch
+  var _t_days: I32 = 0// days since epoch
   // this is duplicate information, but we shouldn't go through the whole
   // `civil_from_days` rigmarole for each `year()`,`month()`,`day()`
-  var _date_tuple: (I32, I32, I32) // year, month, day
+  var _date_tuple: (I32, I32, I32) = (0,0,0) // year, month, day
 
   new create(
     year': I32 = 0,
@@ -10,30 +12,26 @@ class LocalDate is Date
     day': I32 = 0)
   =>
     _t_days = _days_since_epoch(year', month', day')
-    _date_tuple = (0, 0, 0)
+    _date_tuple = _calc_date_tuple()
+
+  new now(offset': (TimeZone | I32) = 0) =>
+    let t_second = stdtime.Time.now()._1
+    _t_days = _epoch_from_unix(t_second, offset')
     _date_tuple = _calc_date_tuple()
 
   new from_unix(
     t_second: I64,
-    milli': I32 = 0,
     offset': (TimeZone | I32) = 0)
   =>
-    let offset: I32 = match offset'
-    | let off: I32 => off
-    | let tz': TimeZone => tz'(t_second * 1000)._1
-    end
-    _t_days = (((t_second * 1000) + offset.i64()).fld(86400 * 1000)).i32()
-    _date_tuple = (0, 0, 0)
+    _t_days = _epoch_from_unix(t_second, offset')
     _date_tuple = _calc_date_tuple()
 
   new min_value() =>
     _t_days = I32.min_value()
-    _date_tuple = (0, 0, 0)
     _date_tuple = _calc_date_tuple()
 
   new max_value() =>
     _t_days = I32.max_value() - Epoch._epoch_offset()
-    _date_tuple = (0, 0, 0)
     _date_tuple = _calc_date_tuple()
 
   fun year(): I32 => _date_tuple._1
@@ -49,6 +47,17 @@ class LocalDate is Date
     that._t_days = _t_days
     that._date_tuple = _date_tuple
     consume that
+
+  fun tag _epoch_from_unix(
+    t_second: I64,
+    offset': (TimeZone | I32) = 0)
+    : I32
+  =>
+    let offset: I32 = match offset'
+    | let off: I32 => off
+    | let tz: TimeZone => tz(t_second * 1000)._1
+    end
+    (((t_second * 1000) + offset.i64()).fld(86400 * 1000)).i32()
 
   fun _calc_date_tuple(): (I32, I32, I32) =>
     // Based on the `civil_from_days` algorithm by Howard Hinnant.
