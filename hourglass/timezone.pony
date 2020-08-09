@@ -36,6 +36,19 @@ class val TimeZone
       .> append("\n".join(_types.values()))
     consume s
 
+  fun eq(that: box->TimeZone): Bool =>
+    var result = false
+    try
+      for (i, v) in _times.pairs() do
+        if v != that._times(i)? then return false end
+      end
+      for (i, v) in _types.pairs() do
+        if v != that._types(i)? then return false end
+      end
+      result = true
+    end
+    result
+
   new val _from_tziffile(fpath: FilePath, id': (String | None) = None ) ? =>
     id = id'
     let file = File.open(fpath)
@@ -172,7 +185,7 @@ class val TimeZone
     else recover String end end
 
 
-class _TransitionTime
+class _TransitionTime is Equatable[_TransitionTime]
   var time: I64 = 0 /* *milliseconds* since unix epoch */
   var typeidx: USize = 0
 
@@ -181,7 +194,10 @@ class _TransitionTime
     let s = ", ".join(a.values())
     consume s
 
-class _TransitionType
+  fun eq(that: box->_TransitionTime): Bool =>
+    (time == that.time) and (typeidx == that.typeidx)
+
+class _TransitionType is Equatable[_TransitionType]
   var utcoff: I32 = 0 /* in *milliseconds* */
   var isdst: Bool = false
   var desigidx: USize = 0
@@ -193,3 +209,10 @@ class _TransitionType
     let a = [as Stringable: utcoff; isdst; desigidx; isstd; isut]
     let s = ", ".join(a.values())
     consume s
+
+  fun eq(that: box->_TransitionType): Bool =>
+    (utcoff == that.utcoff) and
+    (isdst == that.isdst) and
+    (desigidx == that.desigidx) and
+    (isstd == that.isstd) and
+    (isut == that.isut)
