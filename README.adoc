@@ -1,0 +1,63 @@
+image::https://raw.githubusercontent.com/ckafi/pony-hourglass/master/logo.png[Hourglass]
+
+A time zone and leap second aware DateTime package with explicit precision.
+
+== Status
+
+image:https://circleci.com/gh/ckafi/pony-hourglass.svg?style=svg["Hourglass", link="https://circleci.com/gh/ckafi/pony-hourglass"]
+
+Hourglass is pre-alpha software. Test coverage is not great yet, and breaking
+changes *will* occur. Use at your own peril.
+
+== Caveats
+
+* Hourglass uses the proleptic Gregorian calendar (as by ISO 8601:2004), meaning
+  it is assumed that the Gregorian calendar is in effect at all times in the
+  past and future, and that the year before 1 AD is the year 0.
+* There's no heuristic for future leap seconds. The current leap second offset
+  (37 seconds) will be used for every future time point.
+* Hourglass doesn't handle "`early atomic time`", meaning the offset between UTC
+  and TAI for any point prior to 1972 is set to be 10 seconds.
+* Time zone usage depends on existing `zoneinfo` files on the system, which
+  should be okay for POSIX systems.
+
+== Progress
+
+See the glossary for more information about these concepts.
+
+* [ ] Ticks
+* [ ] Trices (primitive ticks)
+* [ ] Granules
+* [ ] Intervals
+* [ ] Instants
+* [ ] Durations
+* [ ] `TZif` parser
+* [ ] String representation
+** [ ] ISO 8601
+*** [ ] Parsing
+** [ ] "`Unified Timestamp`"
+*** [ ] Parsing
+* [ ] Other timestamps
+** [ ] NTP
+** [ ] .NET
+** [ ] GPS
+** [ ] TAI64
+** [ ] Julian date
+** [ ] Lilian date
+** [ ] Rata Die
+* [ ] Civil time
+** [ ] Week date
+** [ ] Ordinal date
+* [ ] DateTime arithmetic
+** [ ] `next(…)`, `prev(_)`
+** [ ] `relDuration()`, `absDuration()`
+** [ ] Time point +/- duration
+** [ ] Interval +/- duration
+** [ ] Duration +/- duration
+
+== Sources / Acknowledgments
+
+* Justus Benzler & Samuel J. Clark, _Toward a Unified Timestamp with explicit precision_. (DOI:  10.4054/DemRes.2005.12.6)
+* Howard Hinnant, https://howardhinnant.github.io/date_algorithms.html[chrono-Compatible Low-Level Date Algorithms]
+* Jon Skeet, https://codeblog.jonskeet.uk/2010/12/01/the-joys-of-date-time-arithmetic[The joys of date/time arithmetic]
+* https://docs.julialang.org/en/v1/stdlib/Dates[The Julia Language stdlib/Dates module]
