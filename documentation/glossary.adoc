@@ -1,0 +1,39 @@
+= Glossary
+
+Instant::
+  A single occurrence in time. Unlike a `Tick` the precise position of an
+  instant is uncertain and is just known to lay within a specified `Interval`.
+  The encompassing `Interval` is usually a `Granule`, but can be any arbitrary
+  complex `Interval`. Examples: _This ticket was submitted **on 25 October
+  2020**_ (`2020-10-25`, simple instants are written like their granule, just
+  without the interval notation), _The storage device will fail **some time
+  between March and August 2022**_ (`[!2022-03 : !2022-09)`),
+Interval::
+  A period of time between to points in time. An interval has a fixed position,
+  but possibly uncertain bounds. Its start and/or end point can be a precise
+  `Tick`, or an `Instant` A `Granule` is a specialisation of an interval;
+  `[2001-05-25)` is shorthand for `[!2001-05-25 - !2001-05-26)`. Examples: _**On
+  13 April 2020** there was to network connection **between 11:13 and 11:29
+  AM**_ (`[!2020-04-13T11:13 - !2020-04-13T11:29)`), _The machine ran **from its
+  purchase in May or June 2018 until 12 July 2020**_ (`[[2018-05 : 2018-06) -
+  2020-07-12)`).
+Granule::
+  An `Interval` at a fixed position in time and with a (relative) duration of 1
+  on the smallest specified `Granularity`, e.g. a specific single day or a
+  specific single year. A granule includes its starting `Tick` and excludes the
+  starting `Tick` of the consecutive granule. Examples: _The users last login
+  was on **18 March 20202**_ (`[2020-03-18)`), _**January 2019** was the only
+  month without outages_ (`[2019-01)`).
+Granularity::
+  The level of discrete details on a specific scale, for example _years_,
+  _months_, _hours_ etc. A calendar has a granularity of days, a clock with a
+  second hand has a granularity of seconds (usually). The granularities of
+  `hourglass` are: years, month, days, hours, minutes, seconds, nanoseconds,
+  attoseconds.
+Moment::
+  Either a `Instant` or a `Tick`.
+Tick::
+  A single point in time with zero duration and infinite precision. A tick is
+  represented as the starting point of a specified `Granule`. Examples: _The
+  Unix epoch is defined as the **beginning of the year 1970**_ (`!1970`), _The
+  new policy applies from **15 February 2021, 4 PM**_ (`!2021-02-15T16`).
