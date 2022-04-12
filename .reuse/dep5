@@ -1,0 +1,10 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: pony-hourglass
+Upstream-Contact: Tobias Frilling <tobias@frilling.dev>
+Source: https://github.com/ckafi/pony-hourglass
+
+# Sample paragraph, commented out:
+#
+# Files: src/*
+# Copyright: $YEAR $NAME <$CONTACT>
+# License: ...
